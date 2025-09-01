@@ -1,0 +1,268 @@
+/* Ferrari-Inspired Car Inventory Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d1b1b 50%, #1a1a1a 100%);
+    color: #ffffff;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(220, 20, 20, 0.2);
+    margin-top: 20px;
+    border: 1px solid rgba(220, 20, 20, 0.1);
+}
+
+h1 {
+    color: #DC143C;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    border-bottom: 3px solid #DC143C;
+    padding-bottom: 15px;
+}
+
+/* Button Styles */
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 5px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.add-btn {
+    background: linear-gradient(45deg, #DC143C, #FF1744);
+    color: white;
+    border: 2px solid #DC143C;
+}
+
+.add-btn:hover {
+    background: linear-gradient(45deg, #FF1744, #DC143C);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
+}
+
+.edit-btn {
+    background: linear-gradient(45deg, #FF8C00, #FFD700);
+    color: #1a1a1a;
+    border: 2px solid #FF8C00;
+}
+
+.edit-btn:hover {
+    background: linear-gradient(45deg, #FFD700, #FF8C00);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+}
+
+.delete-btn {
+    background: linear-gradient(45deg, #8B0000, #DC143C);
+    color: white;
+    border: 2px solid #8B0000;
+}
+
+.delete-btn:hover {
+    background: linear-gradient(45deg, #DC143C, #8B0000);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 0, 0, 0.4);
+}
+
+.btn:not(.add-btn):not(.edit-btn):not(.delete-btn) {
+    background: linear-gradient(45deg, #4a4a4a, #6a6a6a);
+    color: white;
+    border: 2px solid #4a4a4a;
+}
+
+.btn:not(.add-btn):not(.edit-btn):not(.delete-btn):hover {
+    background: linear-gradient(45deg, #6a6a6a, #4a4a4a);
+    transform: translateY(-2px);
+}
+
+/* Form Styles */
+.form-container {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid rgba(220, 20, 20, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #DC143C;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 2px solid #4a4a4a;
+    border-radius: 8px;
+    background: rgba(26, 26, 26, 0.8);
+    color: #ffffff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    outline: none;
+    border-color: #DC143C;
+    background: rgba(26, 26, 26, 0.9);
+    box-shadow: 0 0 15px rgba(220, 20, 60, 0.3);
+}
+
+input[type="text"]::placeholder,
+input[type="number"]::placeholder {
+    color: #888;
+}
+
+.form-actions {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(220, 20, 20, 0.2);
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+thead {
+    background: linear-gradient(45deg, #DC143C, #8B0000);
+}
+
+th {
+    padding: 15px 12px;
+    text-align: left;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+    border-bottom: 2px solid #4a4a4a;
+}
+
+tbody tr {
+    border-bottom: 1px solid rgba(74, 74, 74, 0.5);
+    transition: all 0.3s ease;
+}
+
+tbody tr:hover {
+    background: rgba(220, 20, 60, 0.1);
+    transform: scale(1.01);
+}
+
+td {
+    padding: 12px;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(74, 74, 74, 0.3);
+}
+
+td:first-child {
+    color: #DC143C;
+    font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 2em;
+        letter-spacing: 1px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 8px 6px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 12px;
+        margin: 3px;
+    }
+
+    .form-container {
+        padding: 20px;
+    }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #DC143C, #8B0000);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #FF1744, #DC143C);
+}
+
+/* Animation for page load */
+.container {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
