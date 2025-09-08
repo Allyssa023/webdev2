@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Car</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Add New Car</h1>
+
+    <form th:action="@{/save}" th:object="${car}" method="post" class="form-container">
+
+        <label for="make">Make:</label>
+        <input type="text" id="make" th:field="*{make}" required>
+        <div class="error" th:if="${#fields.hasErrors('make')}" th:errors="*{make}"></div>
+
+        <label for="model">Model:</label>
+        <input type="text" id="model" th:field="*{model}" required>
+        <div class="error" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></div>
+
+        <label for="year">Year:</label>
+        <input type="number" id="year" th:field="*{year}" required>
+        <div class="error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></div>
+
+        <label for="color">Color:</label>
+        <input type="text" id="color" th:field="*{color}" required>
+        <div class="error" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></div>
+
+        <label for="bodyType">Body Type:</label>
+        <input type="text" id="bodyType" th:field="*{bodyType}">
+        <div class="error" th:if="${#fields.hasErrors('bodyType')}" th:errors="*{bodyType}"></div>
+
+        <label for="engineType">Engine Type:</label>
+        <input type="text" id="engineType" th:field="*{engineType}">
+        <div class="error" th:if="${#fields.hasErrors('engineType')}" th:errors="*{engineType}"></div>
+
+        <label for="licensePlate">License Plate:</label>
+        <input type="text" id="licensePlate" th:field="*{licensePlate}" required>
+        <div class="error" th:if="${#fields.hasErrors('licensePlate')}" th:errors="*{licensePlate}"></div>
+
+        <label for="transmission">Transmission:</label>
+        <input type="text" id="transmission" th:field="*{transmission}">
+        <div class="error" th:if="${#fields.hasErrors('transmission')}" th:errors="*{transmission}"></div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn add-btn">Save</button>
+            <a href="/" class="btn">Cancel</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
