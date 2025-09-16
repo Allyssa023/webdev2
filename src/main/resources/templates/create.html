@@ -12,19 +12,19 @@
     <form th:action="@{/save}" th:object="${car}" method="post" class="form-container">
 
         <label for="make">Make:</label>
-        <input type="text" id="make" th:field="*{make}" required>
+        <input type="text" id="make" th:field="*{make}">
         <div class="error" th:if="${#fields.hasErrors('make')}" th:errors="*{make}"></div>
 
         <label for="model">Model:</label>
-        <input type="text" id="model" th:field="*{model}" required>
+        <input type="text" id="model" th:field="*{model}">
         <div class="error" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></div>
 
         <label for="year">Year:</label>
-        <input type="number" id="year" th:field="*{year}" required>
+        <input type="number" id="year" th:field="*{year}">
         <div class="error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></div>
 
         <label for="color">Color:</label>
-        <input type="text" id="color" th:field="*{color}" required>
+        <input type="text" id="color" th:field="*{color}">
         <div class="error" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></div>
 
         <label for="bodyType">Body Type:</label>
@@ -36,7 +36,7 @@
         <div class="error" th:if="${#fields.hasErrors('engineType')}" th:errors="*{engineType}"></div>
 
         <label for="licensePlate">License Plate:</label>
-        <input type="text" id="licensePlate" th:field="*{licensePlate}" required>
+        <input type="text" id="licensePlate" th:field="*{licensePlate}">
         <div class="error" th:if="${#fields.hasErrors('licensePlate')}" th:errors="*{licensePlate}"></div>
 
         <label for="transmission">Transmission:</label>
