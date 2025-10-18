@@ -28,20 +28,37 @@
         <div class="error" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></div>
 
         <label for="bodyType">Body Type:</label>
-        <input type="text" id="bodyType" th:field="*{bodyType}">
+        <select id="bodyType" th:field="*{bodyType}">
+            <option value="">Select</option>
+            <option value="Sedan">Sedan</option>
+            <option value="SUV">SUV</option>
+            <option value="Hatchback">Hatchback</option>
+            <option value="Truck">Truck</option>
+            <option value="Coupe">Coupe</option>
+        </select>
         <div class="error" th:if="${#fields.hasErrors('bodyType')}" th:errors="*{bodyType}"></div>
 
         <label for="engineType">Engine Type:</label>
-        <input type="text" id="engineType" th:field="*{engineType}">
+        <select id="engineType" th:field="*{engineType}">
+            <option value="">Select</option>
+            <option value="Gasoline">Gasoline</option>
+            <option value="Diesel">Diesel</option>
+            <option value="Electric">Electric</option>
+            <option value="Hybrid">Hybrid</option>
+        </select>
         <div class="error" th:if="${#fields.hasErrors('engineType')}" th:errors="*{engineType}"></div>
+
+        <label for="transmission">Transmission:</label>
+        <select id="transmission" th:field="*{transmission}">
+            <option value="">Select</option>
+            <option value="Automatic">Automatic</option>
+            <option value="Manual">Manual</option>
+        </select>
+        <div class="error" th:if="${#fields.hasErrors('transmission')}" th:errors="*{transmission}"></div>
 
         <label for="licensePlate">License Plate:</label>
         <input type="text" id="licensePlate" th:field="*{licensePlate}">
         <div class="error" th:if="${#fields.hasErrors('licensePlate')}" th:errors="*{licensePlate}"></div>
-
-        <label for="transmission">Transmission:</label>
-        <input type="text" id="transmission" th:field="*{transmission}">
-        <div class="error" th:if="${#fields.hasErrors('transmission')}" th:errors="*{transmission}"></div>
 
         <div class="form-actions">
             <button type="submit" class="btn add-btn">Save</button>

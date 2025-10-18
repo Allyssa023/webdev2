@@ -9,9 +9,14 @@
 <div class="container">
     <h1>Car List</h1>
 
-    <a href="/create" class="btn add-btn">+ Add New Car</a>
+    <div class="button-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <a href="/create" class="btn add-btn">+ Add New Car</a>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn logout-btn">Logout</button>
+        </form>
+    </div>
 
-    <table>
+    <table class="car-list">
         <thead>
         <tr>
             <th>ID</th>
@@ -21,8 +26,8 @@
             <th>Color</th>
             <th>Body Type</th>
             <th>Engine Type</th>
-            <th>License Plate</th>
             <th>Transmission</th>
+            <th>License Plate</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -35,12 +40,15 @@
             <td th:text="${car.color}"></td>
             <td th:text="${car.bodyType}"></td>
             <td th:text="${car.engineType}"></td>
-            <td th:text="${car.licensePlate}"></td>
             <td th:text="${car.transmission}"></td>
+            <td th:text="${car.licensePlate}"></td>
             <td>
-                <a th:href="@{'/edit/' + ${car.id}}" class="btn edit-btn">Edit</a>
-                <a th:href="@{'/delete/' + ${car.id}}" class="btn delete-btn"
-                   onclick="return confirm('Are you sure you want to delete this car?');">Delete</a>
+                <div class="action-buttons">
+                    <a th:href="@{'/edit/' + ${car.id}}" class="btn edit-btn">Edit</a>
+                    <a th:href="@{'/delete/' + ${car.id}}" class="btn delete-btn"
+                       onclick="return confirm('Are you sure you want to delete this car?');">Delete</a>
+                </div>
+
             </td>
         </tr>
         </tbody>

@@ -6,33 +6,39 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class CarDTO {
-    @NotBlank(message = "Make is required")
+
+    private int id;
+
+    @NotBlank(message = "Make is required.")
     private String make;
 
-    @NotBlank(message = "Model is required")
+    @NotBlank(message = "Model is required.")
     private String model;
 
-    @Min(value = 1900, message = "Year must be no earlier than 1900")
-    @Max(value = 2025, message = "Year must not exceed 2025")
+    @Min(value = 1900, message = "Year must be no earlier than 1900.")
+    @Max(value = 2025, message = "Year must not exceed 2025.")
     private int year;
 
-    @NotBlank(message = "Color is required")
+    @NotBlank(message = "Color is required.")
     private String color;
 
-    @NotBlank(message = "Body type is required")
+    @NotBlank(message = "Body type is required.")
     private String bodyType;
 
-    @NotBlank(message = "Engine type is required")
+    @NotBlank(message = "Engine type is required.")
     private String engineType;
 
-    @NotBlank(message = "License plate is required")
-    @Size(min = 3, max = 15, message = "License plate must be between 3 and 15 characters")
+    @NotBlank(message = "License plate is required.")
     private String licensePlate;
 
-    @NotBlank(message = "Transmission is required")
+    @NotBlank(message = "Transmission is required.")
     private String transmission;
 
     // Getters and Setters
+    public int getId() { return id;}
+
+    public void setId(int id) { this.id = id;}
+
     public String getMake() {
         return make;
     }

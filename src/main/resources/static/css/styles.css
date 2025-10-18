@@ -1,4 +1,3 @@
-/* Reset and Base Styles */
 * {
     margin: 0;
     padding: 0;
@@ -127,6 +126,13 @@ h1::after {
     background: linear-gradient(135deg, #1d4ed8, #1e40af);
     transform: translateY(-1px);
 }
+/* Align Edit/Delete buttons side by side */
+.action-buttons {
+    display: flex;
+    justify-content: center;  /* centers them horizontally */
+    align-items: center;
+    gap: 12px;                /* space between buttons */
+}
 
 .delete-btn {
     background: linear-gradient(135deg, #ef4444, #dc2626);
@@ -226,6 +232,7 @@ tbody tr:hover {
     box-shadow: 0 8px 30px rgba(59, 130, 246, 0.15);
 }
 
+
 tbody tr:hover td {
     background: transparent;
     color: #e2e8f0;
@@ -261,8 +268,10 @@ tbody tr:last-child td:last-child {
     letter-spacing: 0.025em;
 }
 
+/* Unified form input styles (text, number, select) */
 .form-container input[type="text"],
-.form-container input[type="number"] {
+.form-container input[type="number"],
+.form-container select {
     width: 100%;
     padding: 18px 24px;
     border: 1px solid rgba(148, 163, 184, 0.2);
@@ -273,15 +282,14 @@ tbody tr:last-child td:last-child {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     margin-bottom: 24px;
     backdrop-filter: blur(10px);
+    cursor: pointer;
+    /* keep native dropdown arrow → no appearance reset */
 }
 
-.form-container input[type="text"]::placeholder,
-.form-container input[type="number"]::placeholder {
-    color: #64748b;
-}
-
+/* Focus styling (same as inputs) */
 .form-container input[type="text"]:focus,
-.form-container input[type="number"]:focus {
+.form-container input[type="number"]:focus,
+.form-container select:focus {
     outline: none;
     border-color: #3b82f6;
     box-shadow:
@@ -291,8 +299,10 @@ tbody tr:last-child td:last-child {
     background: rgba(15, 23, 42, 0.95);
 }
 
+/* Hover styling */
 .form-container input[type="text"]:hover,
-.form-container input[type="number"]:hover {
+.form-container input[type="number"]:hover,
+.form-container select:hover {
     border-color: rgba(148, 163, 184, 0.3);
     background: rgba(15, 23, 42, 0.9);
 }
@@ -433,6 +443,29 @@ tbody tr:last-child td:last-child {
     }
 }
 
+.logout-btn {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    box-shadow:
+            0 8px 32px rgba(59, 130, 246, 0.25),
+            0 1px 0 rgba(255, 255, 255, 0.1) inset;
+    padding: 16px 28px;          /* same as add-btn */
+    border-radius: 12px;
+    font-weight: 600;             /* same as add-btn */
+    font-size: 14px;              /* same as add-btn */
+    text-align: center;
+    cursor: pointer;
+    min-width: 140px;             /* same as add-btn */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logout-btn:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    transform: translateY(-2px);
+}
+
+
 /* Enhanced Loading Animation */
 @keyframes slideUp {
     from {
@@ -476,22 +509,75 @@ tbody tr:last-child td:last-child {
     outline-offset: 2px;
 }
 
-input:focus-visible {
+input:focus-visible,
+select:focus-visible {
     outline: 2px solid #3b82f6;
     outline-offset: 2px;
 }
 
-/* Status indicators */
-.form-container input:valid:not(:placeholder-shown) {
+/* === Input Validation === */
+
+/* Highlight invalid required fields */
+input:invalid,
+select:invalid {
+    border: 2px solid #e74c3c;    /* Red border */
+    background-color: rgba(231, 76, 60, 0.1);     /* Light red background with transparency */
+}
+
+/* Highlight valid fields */
+input:valid,
+select:valid {
+    border: 2px solid #2ecc71;    /* Green border */
+}
+
+/* Focus effect for all inputs (override validation colors when focused) */
+input:focus,
+select:focus {
+    border: 2px solid #3498db !important;    /* Blue border on focus */
+    background-color: rgba(15, 23, 42, 0.95) !important;
+}
+
+/* Error message styling */
+.error {
+    color: #e74c3c;               /* Red text for errors */
+    font-size: 0.9em;             /* Slightly smaller than normal text */
+    margin: 5px 0 10px 0;         /* Space from input and bottom */
+    display: block;
+}
+
+/* === Validation states for all fields === */
+
+/* ✅ Valid state */
+.form-container input:valid:not(:placeholder-shown),
+.form-container select:valid:not([value=""]) {
     border-left: 3px solid #10b981;
+    border: 1px solid rgba(148, 163, 184, 0.2);
     box-shadow:
             0 0 0 3px rgba(16, 185, 129, 0.1),
             0 4px 20px rgba(16, 185, 129, 0.1);
 }
 
-.form-container input:invalid:not(:focus):not(:placeholder-shown) {
+/* ❌ Invalid state */
+.form-container input:invalid:not(:focus):not(:placeholder-shown),
+.form-container select:invalid:not(:focus) {
     border-left: 3px solid #ef4444;
+    border: 1px solid rgba(148, 163, 184, 0.2);
     box-shadow:
             0 0 0 3px rgba(239, 68, 68, 0.1),
             0 4px 20px rgba(239, 68, 68, 0.1);
+}
+
+
+/* Focus state (blue, same for all) */
+.form-container input[type="text"]:focus,
+.form-container input[type="number"]:focus,
+.form-container select:focus {
+    outline: none;
+    border-left: 3px solid #3b82f6;  /* blue accent */
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    box-shadow:
+            0 0 0 3px rgba(59, 130, 246, 0.1),
+            0 8px 30px rgba(59, 130, 246, 0.2);
+    transform: translateY(-1px);
+    background: rgba(15, 23, 42, 0.95);
 }
