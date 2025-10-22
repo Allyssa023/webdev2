@@ -1,112 +1,230 @@
-const apiBase = "http://localhost:7070/api/cars";
+// =================== CONFIG ===================
+const apiUrl = "http://localhost:2006/api";
 
-// =================== DOM CONTENT LOADED ===================
-document.addEventListener("DOMContentLoaded", fetchCars);
+// =================== LOGIN ===================
+async function login(event) {
+  event.preventDefault();
+
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  try {
+    const res = await fetch(`${apiUrl}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password })
+    });
+
+    if (!res.ok) throw new Error("Login failed");
+
+    const data = await res.json();
+    localStorage.setItem("token", data.token);
+
+    // Hide login, show cars
+    document.getElementById("loginSection").classList.add("hidden");
+    document.getElementById("registerSection").classList.add("hidden");
+    document.getElementById("carSection").classList.remove("hidden");
+
+    fetchCars();
+  } catch (err) {
+    console.error("Error logging in:", err);
+    alert("Invalid username or password");
+  }
+}
+
+// =================== REGISTER ===================
+async function register(event) {
+  event.preventDefault();
+
+  const username = document.getElementById("regUsername").value;
+  const password = document.getElementById("regPassword").value;
+
+  try {
+    const res = await fetch(`${apiUrl}/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password })
+    });
+
+    if (!res.ok) throw new Error("Registration failed");
+
+
+    toggleRegister(false); // Switch to login
+  } catch (err) {
+    console.error("Error registering:", err);
+    alert("Registration failed. Please try again.");
+  }
+}
+
+// =================== LOGOUT ===================
+function logout() {
+  localStorage.removeItem("token");
+  document.getElementById("carSection").classList.add("hidden");
+  document.getElementById("loginSection").classList.remove("hidden");
+  document.getElementById("carTableBody").innerHTML = "";
+}
 
 // =================== FETCH CARS ===================
 function fetchCars() {
-    fetch(apiBase)
-        .then(res => res.json())
-        .then(cars => {
-            const tbody = document.getElementById("carTableBody");
-            tbody.innerHTML = "";
-            let counter = 0;
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.warn("No token found — please log in first.");
+    return;
+  }
 
-            cars.forEach(car => {
-                tbody.innerHTML += `
-                    <tr class="text-center hover:bg-emerald-900 transition">
-                        <td class="border p-2">${++counter}</td>
-                        <td class="border p-2">${car.licensePlateNumber}</td>
-                        <td class="border p-2">${car.make}</td>
-                        <td class="border p-2">${car.model}</td>
-                        <td class="border p-2">${car.year}</td>
-                        <td class="border p-2">${car.color}</td>
-                        <td class="border p-2">${car.bodyType}</td>
-                        <td class="border p-2">${car.engineType}</td>
-                        <td class="border p-2">${car.transmission}</td>
-                        <td class="border p-2">
-                            <button onclick="openEditModal(${car.carId}, '${car.licensePlateNumber}', '${car.make}', '${car.model}', ${car.year}, '${car.color}', '${car.bodyType}', '${car.engineType}', '${car.transmission}')"
-                                class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Edit</button>
-                            <button onclick="deleteCar(${car.carId})"
-                                class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</button>
-                        </td>
-                    </tr>
-                `;
-            });
-        })
-        .catch(err => console.error("Error fetching cars:", err));
-}
+  fetch(`${apiUrl}/cars`, {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Failed to fetch cars");
+      return res.json();
+    })
+    .then(cars => {
+      const tbody = document.getElementById("carTableBody");
+      tbody.innerHTML = "";
 
-// =================== MODAL ===================
-function openCreateModal() {
-    document.getElementById("carForm").reset();
-    document.getElementById("carId").value = "";
-    document.getElementById("modalTitle").innerText = "Add Car";
-    document.getElementById("carModal").classList.remove("hidden");
-}
-
-function openEditModal(carId, licensePlateNumber, make, model, year, color, bodyType, engineType, transmission) {
-    document.getElementById("carId").value = carId;
-    document.getElementById("licensePlateNumber").value = licensePlateNumber;
-    document.getElementById("make").value = make;
-    document.getElementById("model").value = model;
-    document.getElementById("year").value = year;
-    document.getElementById("color").value = color;
-    document.getElementById("bodyType").value = bodyType;
-    document.getElementById("engineType").value = engineType;
-    document.getElementById("transmission").value = transmission;
-
-    document.getElementById("modalTitle").innerText = "Edit Car";
-    document.getElementById("carModal").classList.remove("hidden");
-}
-
-function closeModal() {
-    document.getElementById("carModal").classList.add("hidden");
+      cars.forEach(car => {
+        const row = document.createElement("tr");
+        row.className = "border-t border-gray-200";
+        row.innerHTML = `
+          <td class="px-6 py-4 text-center text-orange-500 font-bold">${car.id}</td>
+          <td class="px-6 py-4 text-center text-white">${car.licensePlate}</td>
+          <td class="px-6 py-4 text-center text-white">${car.make}</td>
+          <td class="px-6 py-4 text-center text-white">${car.model}</td>
+          <td class="px-6 py-4 text-center text-white">${car.year}</td>
+          <td class="px-6 py-4 text-center text-white">${car.color}</td>
+          <td class="px-6 py-4 text-center text-white">${car.bodyType}</td>
+          <td class="px-6 py-4 text-center text-white">${car.engineType}</td>
+          <td class="px-6 py-4 text-center text-white">${car.transmission}</td>
+          <td class="px-6 py-4 text-center">
+            <button onclick="editCar(${car.id})"
+              class="bg-blue-500 text-white px-4 py-2 rounded-lg font-bold mr-2">
+              Edit
+            </button>
+            <button onclick="deleteCar(${car.id})"
+              class="bg-red-500 text-white px-4 py-2 rounded-lg font-bold">
+              Delete
+            </button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    })
+    .catch(err => console.error("Error fetching cars:", err));
 }
 
 // =================== SAVE CAR ===================
-function saveCar(e) {
-    e.preventDefault();
+function saveCar(event) {
+  event.preventDefault();
+  const token = localStorage.getItem("token");
 
-    const id = document.getElementById("carId").value;
-    const car = {
-        licensePlateNumber: document.getElementById("licensePlateNumber").value,
-        make: document.getElementById("make").value,
-        model: document.getElementById("model").value,
-        year: document.getElementById("year").value,
-        color: document.getElementById("color").value,
-        bodyType: document.getElementById("bodyType").value,
-        engineType: document.getElementById("engineType").value,
-        transmission: document.getElementById("transmission").value
-    };
+  const car = {
+    id: document.getElementById("carId").value,
+    make: document.getElementById("make").value,
+    model: document.getElementById("model").value,
+    year: document.getElementById("year").value,
+    licensePlate: document.getElementById("licensePlate").value,
+    color: document.getElementById("color").value,
+    bodyType: document.getElementById("bodyType").value,
+    engineType: document.getElementById("engineType").value,
+    transmission: document.getElementById("transmission").value
+  };
 
-    const method = id ? "PUT" : "POST";
-    const url = id ? `${apiBase}/${id}` : apiBase;
+  const method = car.id ? "PUT" : "POST";
+  const url = car.id ? `${apiUrl}/cars/${car.id}` : `${apiUrl}/cars`;
 
-    fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(car)
-    })
+  fetch(url, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify(car)
+  })
     .then(res => {
-        if (!res.ok) throw new Error("Failed to save car");
-        return res.json();
+      if (!res.ok) throw new Error("Failed to save car");
+      return res.json();
     })
     .then(() => {
-        closeModal();
-        fetchCars();
+      closeModal();
+      fetchCars();
     })
     .catch(err => console.error("Error saving car:", err));
 }
 
+// =================== EDIT CAR ===================
+function editCar(id) {
+  const token = localStorage.getItem("token");
+  fetch(`${apiUrl}/cars/${id}`, {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Failed to fetch car");
+      return res.json();
+    })
+    .then(car => {
+      openModal();
+      document.getElementById("modalTitle").innerText = "Edit Car";
+      document.getElementById("carId").value = car.id;
+      document.getElementById("make").value = car.make;
+      document.getElementById("model").value = car.model;
+      document.getElementById("year").value = car.year;
+      document.getElementById("licensePlate").value = car.licensePlate;
+      document.getElementById("color").value = car.color;
+      document.getElementById("bodyType").value = car.bodyType;
+      document.getElementById("engineType").value = car.engineType;
+      document.getElementById("transmission").value = car.transmission;
+    })
+    .catch(err => console.error("Error editing car:", err));
+}
+
 // =================== DELETE CAR ===================
 function deleteCar(id) {
-    if (!confirm("Delete this car?")) return;
+  if (!confirm("Are you sure you want to delete this car?")) return;
+  const token = localStorage.getItem("token");
 
-    fetch(`${apiBase}/${id}`, { method: "DELETE" })
-        .then(res => {
-            if (!res.ok) throw new Error("Failed to delete car");
-            fetchCars();
-        })
-        .catch(err => alert("Error deleting car: " + err));
+  fetch(`${apiUrl}/cars/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Failed to delete car");
+      fetchCars();
+    })
+    .catch(err => console.error("Error deleting car:", err));
 }
+
+// =================== MODAL ===================
+function openModal() {
+  document.getElementById("formSection").classList.remove("hidden");
+  document.getElementById("modalTitle").innerText = "Add New Car";
+  document.getElementById("carForm").reset();
+  document.getElementById("carId").value = "";
+}
+
+function closeModal() {
+  document.getElementById("formSection").classList.add("hidden");
+}
+
+// =================== TOGGLE REGISTER/LOGIN ===================
+function toggleRegister(showRegister) {
+  document.getElementById("loginSection").classList.toggle("hidden", showRegister);
+  document.getElementById("registerSection").classList.toggle("hidden", !showRegister);
+}
+
+// =================== INITIALIZE ===================
+document.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    document.getElementById("loginSection").classList.add("hidden");
+    document.getElementById("registerSection").classList.add("hidden");
+    document.getElementById("carSection").classList.remove("hidden");
+    fetchCars();
+  }
+});
