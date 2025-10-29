@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>To-Do List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .note {
+        transform: rotate(-1deg);
+        transition: transform 0.2s ease;
+      }
+      .note:hover {
+        transform: rotate(0deg) scale(1.02);
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-gradient-to-br from-blue-50 via-slate-100 to-blue-100 min-h-screen flex items-center justify-center p-4"
+  >
+    <div id="root" class="w-full max-w-3xl"></div>
+
+    <!-- React + ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/jsx">
+      // ✅ Task Component
+      function Task({ task, onDelete, onToggle }) {
+        return (
+          <div
+            className="note bg-blue-50 p-4 rounded-xl shadow-sm border border-blue-200 relative w-full sm:w-[48%] md:w-[31%]"
+          >
+            <input
+              type="checkbox"
+              checked={task.isDone}
+              onChange={() => onToggle(task.title)}
+              className="absolute top-3 left-3 accent-blue-600 w-4 h-4"
+            />
+            <button
+              onClick={() => onDelete(task.title)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-red-600 text-lg font-semibold"
+            >
+              ✕
+            </button>
+            <p
+              className={`mt-6 font-medium text-gray-800 ${
+                task.isDone ? "line-through text-gray-400" : ""
+              }`}
+            >
+              {task.title}
+            </p>
+          </div>
+        );
+      }
+
+      // ✅ Main App Component
+      function App() {
+        const [tasks, setTasks] = React.useState([
+          { title: "Clean bedroom 🧹", isDone: false },
+          { title: "Finish React project 💻", isDone: false },
+          { title: "Review for exams 📚", isDone: false },
+          { title: "Do grocery shopping 🛒", isDone: true },
+          { title: "Plan weekend picnic 🧺", isDone: false },
+        ]);
+
+        const [newTask, setNewTask] = React.useState("");
+
+        const addTask = () => {
+          if (newTask.trim() === "") return;
+          setTasks([...tasks, { title: newTask.trim(), isDone: false }]);
+          setNewTask("");
+        };
+
+        const deleteTask = (title) => {
+          setTasks(tasks.filter((t) => t.title !== title));
+        };
+
+        const toggleDone = (title) => {
+          setTasks(
+            tasks.map((t) =>
+              t.title === title ? { ...t, isDone: !t.isDone } : t
+            )
+          );
+        };
+
+        return (
+          <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-6 sm:p-10 w-full border border-blue-100">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-center mb-6 text-blue-700">
+              🗒️ My To-Do List
+            </h1>
+
+            <div className="flex flex-col sm:flex-row items-center mb-6 gap-3">
+              <input
+                type="text"
+                placeholder="Add a new task..."
+                value={newTask}
+                onChange={(e) => setNewTask(e.target.value)}
+                className="flex-1 border-2 border-blue-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+              <button
+                onClick={addTask}
+                className="bg-blue-600 text-white px-6 py-2 rounded-xl font-semibold hover:bg-blue-700 transition"
+              >
+                Add
+              </button>
+            </div>
+
+            {tasks.length === 0 ? (
+              <p className="text-center text-gray-600 italic">
+                No tasks yet! Add something to get started 🕒
+              </p>
+            ) : (
+              <div className="flex flex-wrap gap-4 justify-center sm:justify-between">
+                {tasks.map((task) => (
+                  <Task
+                    key={task.title}
+                    task={task}
+                    onDelete={deleteTask}
+                    onToggle={toggleDone}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      // Render React App
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
