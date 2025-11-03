@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.DecimalMin;
-import java.math.BigDecimal;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "products")
@@ -28,9 +27,10 @@ public class Product {
     private String unit;
 
     @NotNull(message = "Price is required")
-    @DecimalMin(value = "1.0", message = "Price must be at least 1")
-    private BigDecimal price;
+    @Positive(message = "Price must be greater than 0")
+    private double price;  // Changed from BigDecimal to double
 
+    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -67,11 +67,11 @@ public class Product {
         this.unit = unit;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 }

@@ -4,13 +4,12 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
-@CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"},
-        allowedHeaders = "*",
-        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+@CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/products")
 public class ProductController {
 
     private final ProductService productService;
@@ -19,33 +18,30 @@ public class ProductController {
         this.productService = productService;
     }
 
-    // GET all products
-    @GetMapping("/products")
+    @GetMapping
     public List<Product> getAllProducts() {
         return productService.findAll();
     }
 
-    // POST create new product
-    @PostMapping("/products")
-    public Product newProduct(@Valid @RequestBody ProductDTO productDTO) {
-        return productService.save(productDTO);
+    @PostMapping
+    public Product createProduct(@Valid @RequestBody ProductDTO dto) {
+        return productService.save(dto);
     }
 
-    // PUT update product
-    @PutMapping("/products/{id}")
-    public Product updateProduct(@PathVariable int id, @Valid @RequestBody ProductDTO productDTO) {
-        Product existingProduct = productService.findById(id);
-        if (existingProduct == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product with ID " + id + " not found.");
+    @PutMapping("/{id}")
+    public Product updateProduct(@PathVariable int id, @Valid @RequestBody ProductDTO dto) {
+        Product existing = productService.findById(id);
+        if (existing == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
-        return productService.updateProduct(existingProduct, productDTO);
+        return productService.updateProduct(existing, dto);
     }
 
-    // DELETE product
-    @DeleteMapping("/products/{id}")
+    @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable int id) {
-        if (productService.findById(id) == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product with ID " + id + " not found.");
+        Product existing = productService.findById(id);
+        if (existing == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
         productService.deleteProduct(id);
     }

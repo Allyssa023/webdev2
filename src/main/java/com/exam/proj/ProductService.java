@@ -26,7 +26,7 @@ public class ProductService {
         newProduct.setDescription(productDTO.description());
         newProduct.setStock(productDTO.stock());
         newProduct.setUnit(productDTO.unit());
-        newProduct.setPrice(productDTO.price());
+        newProduct.setPrice(productDTO.price());  // now a double
         return repository.save(newProduct);
     }
 
@@ -35,7 +35,7 @@ public class ProductService {
         existingProduct.setDescription(productDTO.description());
         existingProduct.setStock(productDTO.stock());
         existingProduct.setUnit(productDTO.unit());
-        existingProduct.setPrice(productDTO.price());
+        existingProduct.setPrice(productDTO.price()); // now a double
         return repository.save(existingProduct);
     }
 
